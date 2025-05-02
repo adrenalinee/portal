@@ -1,0 +1,7 @@
+/* mantine + tailwindcss 4.0: https://github.com/orgs/mantinedev/discussions/7459 */
+@layer theme, base, mantine, components, utilities;
+
+@import 'tailwindcss';
+
+@import '@mantine/core/styles.layer.css';
+@import 'mantine-datatable/styles.css';
