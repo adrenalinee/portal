@@ -17,14 +17,15 @@ import {
 } from "@mantine/core";
 import { ItemCardGrid } from "@/components/item-card-grid";
 import ItemTagFilter from "@/components/item-tag-filter";
-import { getItems } from "@/services/item-service";
-import { Item, SearchItemDto } from "@/models/item";
+import { Item, SearchItemSpec } from "@/models/item";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ItemDataTable from "@/components/item-data-table";
 import { useQuery } from "@tanstack/react-query";
 import classes from "@/app/globals.module.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { IconLayoutGrid, IconLayoutList } from "@tabler/icons-react";
+import { ServerPhaseContext } from "@/components/server-phase-context-provider";
+import { searchItems } from "@/services/item-service2";
 
 
 export default function ItemSearch({
@@ -46,11 +47,6 @@ export default function ItemSearch({
             <Alert>
               <Text c="gray" size="sm" lineClamp={1}>키워드와 태그 검색으로 원하는 곳으로 빠르게 이동하세요!</Text>
             </Alert>
-
-            {/*<Group wrap="nowrap">*/}
-            {/*  <Title order={3}>Explore</Title>*/}
-            {/*  <Text c="gray" size="sm">키워드와 태그 검색으로 원하는 곳으로 빠르게 이동하세요!</Text>*/}
-            {/*</Group>*/}
           </Grid.Col>
           <Grid.Col span={{
             base: 12,
@@ -88,13 +84,15 @@ function ItemsView({
 }) {
   const searchDto = {
     keyword: searchKeyword,
-    tags: searchTagNames,
+    // tags: searchTagNames,
+    tagNames: searchTagNames,
     sort: sort
-  } as SearchItemDto
+  } as SearchItemSpec
 
+  const serverPhase = useContext(ServerPhaseContext)
   const itemsData = useQuery({
-    queryKey: ["items", searchDto],
-    queryFn: () => getItems(searchDto)
+    queryKey: [serverPhase, "items", searchDto],
+    queryFn: () => searchItems(serverPhase, searchDto)
   });
 
   if (itemsData.isPending) {
@@ -120,7 +118,7 @@ function ItemsView({
     )
   }
 
-  const filteredItems = itemsData.data
+  const filteredItems = itemsData.data.content
 
   return (
     <Stack>

@@ -1,27 +1,32 @@
+import { Tag } from "@/models/tag";
 
 export interface Item {
-  // id: number
+  itemId: string
   name: string
   faviconLink?: string
   description?: string
-  repLinkUrl: string,
-  extraLinks: Link[]
-  tags: Tag[]
+
+  representLink: string
+  extraLinks: ExtraLink[]
+  itemTags: ItemTag[]
+  createAt: string
 }
 
-export interface Link {
+export interface ExtraLink {
   url: string
   name: string,
   description?: string
 }
 
-export interface Tag {
-  name: string
-  description?: string
+export interface ItemTag {
+  tag: Tag
+  createAt: string
 }
 
-export interface SearchItemDto {
+export interface SearchItemSpec {
   keyword?: string
-  tags?: string[]
   sort?: string
+  tagNames?: string[]
+
+  tags?: string[]
 }

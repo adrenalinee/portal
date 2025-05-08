@@ -1,8 +1,9 @@
-import { Item, SearchItemDto, Tag } from "@/models/item";
+import { Item, SearchItemSpec } from "@/models/item";
 import { getItemsData } from "@/datas/item-data";
+import { Tag } from "@/models/tag";
 
 
-export function getItems(searchDto: SearchItemDto): Item[] {
+export function getItems(searchDto: SearchItemSpec): Item[] {
   const searchKeyword = searchDto.keyword
   const searchTagNames = searchDto.tags ?? []
   const sort = searchDto.sort
@@ -26,7 +27,7 @@ export function getItems(searchDto: SearchItemDto): Item[] {
           if (searchTagName.trim() === '') {
             return true
           }
-          return item.tags.find(tag => tag.name === searchTagName)
+          return item.itemTags.find(tag => tag.name === searchTagName)
         })
         .length == searchTagNames.length
     })
@@ -47,7 +48,7 @@ export function getItemTags(): Tag[] {
 
 
 export function extractTags(items: Item[]): Tag[] {
-  const rawTags = items.flatMap((item: Item) => item.tags)
+  const rawTags = items.flatMap((item: Item) => item.itemTags)
 
   const tagsMap = new Map<string, {
     tag: Tag,

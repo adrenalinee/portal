@@ -1,10 +1,12 @@
 'use client'
 
-import { Tag } from "@/models/item";
-import { Center, Chip, Flex, Loader, Stack, Title } from "@mantine/core";
+import { Center, Chip, Flex, Loader, Stack, Title, Tooltip } from "@mantine/core";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getItemTags } from "@/services/item-service";
+import { searchTags } from "@/services/tag-service";
+import { useContext } from "react";
+import { ServerPhaseContext } from "@/components/server-phase-context-provider";
+import { Tag } from "@/models/tag";
 
 
 export default function ItemTagFilter({
@@ -12,9 +14,10 @@ export default function ItemTagFilter({
 }: {
   searchTagNames: string[]
 }) {
+  const serverPhase = useContext(ServerPhaseContext)
   const itemTagsData = useQuery({
-    queryKey: ["itemTags"],
-    queryFn: () => getItemTags()
+    queryKey: [serverPhase, "tags"],
+    queryFn: () => searchTags(serverPhase)
   });
 
   if (itemTagsData.isPending) {
@@ -36,7 +39,7 @@ export default function ItemTagFilter({
     )
   }
 
-  const allTags = itemTagsData.data
+  const allTags = itemTagsData.data.content
 
   return (
     <ItemTagFilterInner
@@ -67,25 +70,31 @@ function ItemTagFilterInner({
         rowGap="3"
       >
         {allTags.map((tag, index) => (
-          <Chip
+          <Tooltip
             key={index}
-            size="xs"
-            value={tag.name}
-            checked={searchTagNames.find(searchTagName => searchTagName === tag.name) != undefined}
-            onClick={(e) => {
-              const tagName = e.currentTarget.value
-              const params = new URLSearchParams(searchParams)
+            label={tag.description}
+            withArrow={true}
+            refProp="rootRef"
+          >
+            <Chip
+              size="xs"
+              value={tag.name}
+              checked={searchTagNames.find(searchTagName => searchTagName === tag.name) != undefined}
+              onClick={(e) => {
+                const tagName = e.currentTarget.value
+                const params = new URLSearchParams(searchParams)
 
-              if (e.currentTarget.checked) {
-                params.append('t', tagName)
+                if (e.currentTarget.checked) {
+                  params.append('t', tagName)
 
-              } else {
-                params.delete('t', tagName)
-              }
+                } else {
+                  params.delete('t', tagName)
+                }
 
-              router.replace(pathname + '?' + params.toString())
-            }}
-          >{tag.name}</Chip>
+                router.replace(pathname + '?' + params.toString())
+              }}
+            >{tag.name}</Chip>
+          </Tooltip>
         ))}
       </Flex>
     </Stack>

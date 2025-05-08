@@ -28,7 +28,7 @@ export default function Logo({
       <Link href="/">
         <Group align="center">
           <Title order={3}>Portal</Title>
-          <Title order={4} c="gray"></Title>
+          {/*<Title order={4} c="gray"></Title>*/}
         </Group>
       </Link>
       {rightSection !== undefined ? rightSection : undefined}
