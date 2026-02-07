@@ -1,28 +1,30 @@
 'use client'
 
 import {
-  ActionIcon, Alert,
+  ActionIcon,
+  Alert,
   Avatar,
   Badge,
   Button,
-  Card, Center,
-  Collapse, Container,
+  Card,
+  Center,
   Grid,
   Group,
   Highlight,
-  HoverCard, Loader,
+  HoverCard,
+  Loader,
   Stack,
   Text,
   Tooltip
 } from "@mantine/core";
-import { Item } from "@/models/item";
-import { IconArrowRight, IconCircleDashedCheck, IconSelector } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
-import { useContext } from "react";
-import { TargetContext } from "@/components/target-context-provider";
-import { ServerPhaseContext } from "@/components/server-phase-context-provider";
-import { useQuery } from "@tanstack/react-query";
-import { getItem, searchItems } from "@/services/item-service2";
+import {Item} from "@/models/item";
+import {IconArrowRight, IconCircleDashedCheck, IconSelector} from "@tabler/icons-react";
+import {useDisclosure} from "@mantine/hooks";
+import {useContext} from "react";
+import {TargetContext} from "@/components/target-context-provider";
+import {ServerPhaseContext} from "@/components/server-phase-context-provider";
+import {useQuery} from "@tanstack/react-query";
+import {getItem} from "@/services/item-service2";
 
 export function ItemCardGrid({
   items,
