@@ -5,7 +5,8 @@ import ItemKeywordFilter from "@/components/item-keyword-filter";
 import SearchButton from "@/components/search-button";
 import ThemeToggleButton from "@/components/layout/theme-toggle-button";
 import { ActionIcon, Group } from "@mantine/core";
-import { IconBrandGithub } from "@tabler/icons-react";
+import { IconBrandGithub, IconSettings } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default async function HomePage({
   searchParams
@@ -51,14 +52,21 @@ export default async function HomePage({
     {/*<ItemKeywordFilter searchKeyword={searchKeyword} />*/}
     <SearchButton searchKeyword={searchKeyword} />
     <ThemeToggleButton />
+    {/*<ActionIcon*/}
+    {/*  color="gray"*/}
+    {/*  size="input-xs"*/}
+    {/*  variant="light"*/}
+    {/*  component="a"*/}
+    {/*  href="/"*/}
+    {/*// target="_blank"*/}
+    {/*><IconBrandGithub /></ActionIcon>*/}
     <ActionIcon
       color="gray"
       size="input-xs"
       variant="light"
-      component="a"
-      href="/"
-      // target="_blank"
-    ><IconBrandGithub /></ActionIcon>
+      component={Link}
+      href="/admin"
+    ><IconSettings /></ActionIcon>
   </Group>
 
   return (
